@@ -26,7 +26,7 @@ Library
                    mtl == 2.1.*,
                    monad-loops == 0.3.*,
                    hint == 0.4.*,
-                   eprocess == 1.5.*,
+                   eprocess == 1.6.*,
                    exceptions == 0.3.*
     exposed-modules: Language.Haskell.Interpreter.Server
     hs-source-dirs: src
