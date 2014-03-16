@@ -9,6 +9,7 @@ module Language.Haskell.Interpreter.Server (
 import Control.Concurrent.MVar
 import Control.Monad.Error
 import Control.Monad.Loops
+import Control.Monad.Catch (catch)
 import Control.Concurrent.Process
 import Language.Haskell.Interpreter
 
@@ -66,7 +67,7 @@ flush :: ServerHandle                    -- ^ The handle of the server that will
 flush server = runIn server $ return ()
 
 try :: InterpreterT IO b -> InterpreterT IO (Either InterpreterError b)
-try a = (a >>= return . Right) `catchError` (return . Left)
+try a = (a >>= return . Right) `catch` (return . Left)
 
 -- | Stops the server. Usage:
 -- @
