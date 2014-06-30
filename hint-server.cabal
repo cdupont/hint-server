@@ -1,5 +1,5 @@
 name: hint-server
-version: 1.3.0
+version: 1.3.2
 cabal-version: >=1.6
 build-type: Simple
 license: BSD3
@@ -11,15 +11,14 @@ synopsis: A server process that runs hint.
 description: This library provides a server process (implemented using eprocess) that can receive and run actions in the Interpreter monad.
 category: Concurrency, Language, Compilers/Interpreters
 author: Fernando "Brujo" Benavides
-tested-with: GHC ==6.12.1
 data-files: LICENSE README
 data-dir: ""
-extra-source-files: Setup.hs
+extra-source-files: Setup.hs, changelog
 extra-tmp-files:
 
 source-repository head
     type:     git
-    location: git://github.com/cdupont/hint-server.git
+    location: https://github.com/cdupont/hint-server.git
 
 Library
     build-depends: base == 4.*,
@@ -30,5 +29,4 @@ Library
                    exceptions == 0.3.*
     exposed-modules: Language.Haskell.Interpreter.Server
     hs-source-dirs: src
-    extensions: CPP
     
