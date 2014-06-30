@@ -1,7 +1,5 @@
-{-# LANGUAGE CPP #-}
-#if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE ImpredicativeTypes #-}
-#endif
+
 -- | This module provides a server process (implemented using eprocess) that can receive and run actions in the Interpreter monad.
 module Language.Haskell.Interpreter.Server (
 -- * Types
