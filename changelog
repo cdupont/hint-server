@@ -1,0 +1,6 @@
+
+Version 1.3:
+- bump version of Hint
+- bump version of eprocess
+- Corentin Dupont takes over maintainance (as agreed with Fernando Benavides)
+- compiling with GHC 7.8
