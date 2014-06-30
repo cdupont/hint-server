@@ -1,3 +1,7 @@
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ >= 708
+{-# LANGUAGE ImpredicativeTypes #-}
+#endif
 -- | This module provides a server process (implemented using eprocess) that can receive and run actions in the Interpreter monad.
 module Language.Haskell.Interpreter.Server (
 -- * Types
@@ -20,7 +24,7 @@ newtype ServerHandle = SH {handle :: Handle (InterpreterT IO ())}
 instance MonadInterpreter m => MonadInterpreter (ReceiverT r m) where
     fromSession = lift . fromSession
     modifySessionRef a = lift . (modifySessionRef a)
-    runGhc = lift . runGhc 
+    runGhc = lift . runGhc
 
 -- | Starts the server. Usage:
 -- @
