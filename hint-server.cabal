@@ -30,4 +30,5 @@ Library
                    exceptions == 0.3.*
     exposed-modules: Language.Haskell.Interpreter.Server
     hs-source-dirs: src
+    extensions: CPP
     
