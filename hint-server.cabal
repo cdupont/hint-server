@@ -1,5 +1,5 @@
 name: hint-server
-version: 1.4.1
+version: 1.4.2
 cabal-version: >=1.6
 build-type: Simple
 license: BSD3
