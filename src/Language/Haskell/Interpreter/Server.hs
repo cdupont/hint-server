@@ -9,7 +9,7 @@ module Language.Haskell.Interpreter.Server (
     ) where
 
 import Control.Concurrent.MVar
-import Control.Monad.Except
+import Control.Monad.Error
 import Control.Monad.Loops
 import Control.Monad.Catch (catch)
 import Control.Concurrent.Process
