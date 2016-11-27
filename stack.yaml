@@ -3,4 +3,4 @@ packages:
 - '.'
 extra-deps:
 - eprocess-1.7.1
-resolver: nightly-2015-07-21
+resolver: lts-7.7
