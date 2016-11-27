@@ -1,4 +1,5 @@
 {-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE CPP #-}
 
 -- | This module provides a server process (implemented using eprocess) that can receive and run actions in the Interpreter monad.
 module Language.Haskell.Interpreter.Server (
@@ -9,7 +10,11 @@ module Language.Haskell.Interpreter.Server (
     ) where
 
 import Control.Concurrent.MVar
+#if __GLASGOW_HASKELL__ >= 800
+import Control.Monad.Except
+#else
 import Control.Monad.Error
+#endif
 import Control.Monad.Loops
 import Control.Monad.Catch (catch)
 import Control.Concurrent.Process
@@ -21,7 +26,7 @@ newtype ServerHandle = SH {handle :: Handle (InterpreterT IO ())}
 
 instance MonadInterpreter m => MonadInterpreter (ReceiverT r m) where
     fromSession = lift . fromSession
-    modifySessionRef a = lift . (modifySessionRef a)
+    modifySessionRef a = lift . modifySessionRef a
     runGhc = lift . runGhc
 
 -- | Starts the server. Usage:
@@ -29,7 +34,7 @@ instance MonadInterpreter m => MonadInterpreter (ReceiverT r m) where
 --      handle <- start
 -- @
 start :: IO ServerHandle
-start = (spawn $ makeProcess runInterpreter interpreter) >>= return . SH
+start = fmap SH (spawn $ makeProcess runInterpreter interpreter)
     where interpreter =
             do
                 setImports ["Prelude"]
@@ -69,7 +74,7 @@ flush :: ServerHandle                    -- ^ The handle of the server that will
 flush server = runIn server $ return ()
 
 try :: InterpreterT IO b -> InterpreterT IO (Either InterpreterError b)
-try a = (a >>= return . Right) `catch` (return . Left)
+try a = fmap Right a `catch` (return . Left)
 
 -- | Stops the server. Usage:
 -- @
