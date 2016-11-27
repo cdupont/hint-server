@@ -9,7 +9,7 @@ module Language.Haskell.Interpreter.Server (
     ) where
 
 import Control.Concurrent.MVar
-import Control.Monad.Error
+import Control.Monad.Except
 import Control.Monad.Loops
 import Control.Monad.Catch (catch)
 import Control.Concurrent.Process
@@ -21,7 +21,7 @@ newtype ServerHandle = SH {handle :: Handle (InterpreterT IO ())}
 
 instance MonadInterpreter m => MonadInterpreter (ReceiverT r m) where
     fromSession = lift . fromSession
-    modifySessionRef a = lift . (modifySessionRef a)
+    modifySessionRef a = lift . modifySessionRef a
     runGhc = lift . runGhc
 
 -- | Starts the server. Usage:
@@ -29,7 +29,7 @@ instance MonadInterpreter m => MonadInterpreter (ReceiverT r m) where
 --      handle <- start
 -- @
 start :: IO ServerHandle
-start = (spawn $ makeProcess runInterpreter interpreter) >>= return . SH
+start = fmap SH (spawn $ makeProcess runInterpreter interpreter)
     where interpreter =
             do
                 setImports ["Prelude"]
@@ -69,7 +69,7 @@ flush :: ServerHandle                    -- ^ The handle of the server that will
 flush server = runIn server $ return ()
 
 try :: InterpreterT IO b -> InterpreterT IO (Either InterpreterError b)
-try a = (a >>= return . Right) `catch` (return . Left)
+try a = fmap Right a `catch` (return . Left)
 
 -- | Stops the server. Usage:
 -- @
