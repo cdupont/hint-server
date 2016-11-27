@@ -1,4 +1,5 @@
 {-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE CPP #-}
 
 -- | This module provides a server process (implemented using eprocess) that can receive and run actions in the Interpreter monad.
 module Language.Haskell.Interpreter.Server (
@@ -9,7 +10,11 @@ module Language.Haskell.Interpreter.Server (
     ) where
 
 import Control.Concurrent.MVar
+#if __GLASGOW_HASKELL__ >= 800
 import Control.Monad.Except
+#else
+import Control.Monad.Error
+#endif
 import Control.Monad.Loops
 import Control.Monad.Catch (catch)
 import Control.Concurrent.Process
